@@ -24,34 +24,6 @@ def generate_report(total_units, failed_attempts):
     print("Number of Failed/Rejected Entries:", failed_attempts)
 
 
-inventory = 0
-failed_entries = 0
-deliveries_processed = 0
-
-while True:
-    stock = get_valid_input()
-
-    if stock == "quit":
-        break
-
-    if stock is None:
-        failed_entries += 1
-        continue
-
-    inventory = process_delivery(inventory, stock)
-    tax = calculate_tax(stock)
-    deliveries_processed += 1
-
-    print("Tax for this delivery:", tax)
-
-    if inventory > 500:
-        print("Alert: Inventory has exceeded 500 units!")
-        break
-
-    print("Current inventory:", inventory)
-
-generate_report(inventory, failed_entries)
-
 def load_inventory():
     try:
         with open("inventory.txt", "r") as file:
@@ -76,3 +48,36 @@ def save_inventory(total, history):
         file.write(",".join(str(value) for value in history))
 
     print("Inventory successfully saved to inventory.txt")
+
+
+inventory, transaction_history = load_inventory()
+
+failed_entries = 0
+deliveries_processed = 0
+
+while True:
+    stock = get_valid_input()
+
+    if stock == "quit":
+        break
+
+    if stock is None:
+        failed_entries += 1
+        continue
+
+    inventory = process_delivery(inventory, stock)
+    transaction_history.append(stock)
+
+    tax = calculate_tax(stock)
+    deliveries_processed += 1
+
+    print("Tax for this delivery:", tax)
+
+    if inventory > 500:
+        print("Alert: Inventory has exceeded 500 units!")
+        break
+
+    print("Current inventory:", inventory)
+
+save_inventory(inventory, transaction_history)
+generate_report(inventory, failed_entries)
