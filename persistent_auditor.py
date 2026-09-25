@@ -51,3 +51,28 @@ while True:
     print("Current inventory:", inventory)
 
 generate_report(inventory, failed_entries)
+
+def load_inventory():
+    try:
+        with open("inventory.txt", "r") as file:
+            total = int(file.readline().strip())
+
+            history_line = file.readline().strip()
+
+            if history_line:
+                history = [int(value) for value in history_line.split(",")]
+            else:
+                history = []
+
+            return total, history
+
+    except FileNotFoundError:
+        return 0, []
+
+
+def save_inventory(total, history):
+    with open("inventory.txt", "w") as file:
+        file.write(str(total) + "\n")
+        file.write(",".join(str(value) for value in history))
+
+    print("Inventory successfully saved to inventory.txt")
