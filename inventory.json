@@ -21,6 +21,18 @@
         "id": "P004",
         "name": "Monitor",
         "price": 299.99,
-        "stock": 10
+        "stock": 7
+    },
+    {
+        "id": "Glitter",
+        "name": "P005",
+        "price": 7.99,
+        "stock": 20
+    },
+    {
+        "id": "P006",
+        "name": "My Melody Keychain",
+        "price": 15.99,
+        "stock": 14
     }
 ]
