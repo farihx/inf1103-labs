@@ -3,36 +3,56 @@
         "id": "P001",
         "name": "Laptop",
         "price": 1200.0,
-        "stock": 15
+        "stock": 15,
+        "type": "physical",
+        "weight": 1.5
     },
     {
         "id": "P002",
         "name": "Mouse",
         "price": 25.5,
-        "stock": 50
+        "stock": 50,
+        "type": "physical",
+        "weight": 0.1
     },
     {
         "id": "P003",
         "name": "Keyboard",
         "price": 45.0,
-        "stock": 25
+        "stock": 25,
+        "type": "physical",
+        "weight": 0.5
     },
     {
         "id": "P004",
         "name": "Monitor",
         "price": 299.99,
-        "stock": 7
+        "stock": 7,
+        "type": "physical",
+        "weight": 4.0
     },
     {
         "id": "Glitter",
         "name": "P005",
         "price": 7.99,
-        "stock": 20
+        "stock": 20,
+        "type": "physical",
+        "weight": 0.1
     },
     {
         "id": "P006",
         "name": "My Melody Keychain",
         "price": 15.99,
-        "stock": 14
+        "stock": 11,
+        "type": "physical",
+        "weight": 0.05
+    },
+    {
+        "id": "D008",
+        "name": "Digi",
+        "price": 300.0,
+        "stock": 9,
+        "type": "digital",
+        "download_size": 450.0
     }
 ]

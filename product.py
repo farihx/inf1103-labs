@@ -1,5 +1,6 @@
+from abc import ABC, abstractmethod
 
-class Product:
+class Product(ABC):
     def __init__(self, product_id: str, name: str, price: float, stock: int):
         if not product_id.strip():
             raise ValueError("Product ID cannot be empty.")
@@ -44,3 +45,7 @@ class Product:
             f"Price: ${self.__price:.2f} | "
             f"Stock: {self.__stock}"
         )
+
+    @abstractmethod
+    def get_fulfilment_info(self) -> str:
+        pass

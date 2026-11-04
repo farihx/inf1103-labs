@@ -1,6 +1,9 @@
 import json
-from product import Product
+
 from inventory import Inventory
+from physical_product import PhysicalProduct
+from digital_product import DigitalProduct
+from can_be_shipped import CanBeShipped
 
 # Load inventory data from JSON
 def load_inventory():
@@ -11,12 +14,30 @@ def load_inventory():
             data = json.load(file)
 
         for item in data:
-            product = Product(
-                item["id"],
-                item["name"],
-                float(item["price"]),
-                int(item["stock"])
-            )
+            product_type = item["type"].lower()
+
+            if product_type == "physical":
+                product = PhysicalProduct(
+                    item["id"],
+                    item["name"],
+                    float(item["price"]),
+                    int(item["stock"]),
+                    float(item["weight"])
+                )
+
+            elif product_type == "digital":
+                product = DigitalProduct(
+                    item["id"],
+                    item["name"],
+                    float(item["price"]),
+                    int(item["stock"]),
+                    float(item["download_size"])
+                )
+
+            else:
+                raise ValueError(
+                    f"Unknown product type: {product_type}"
+                )
 
             inventory.add_product(product)
 
@@ -35,12 +56,29 @@ def save_inventory(inventory):
     data = []
 
     for product in inventory.get_products():
-        product_data = {
-            "id": product.product_id,
-            "name": product.name,
-            "price": product.price,
-            "stock": product.stock
-        }
+
+        if isinstance(product, PhysicalProduct):
+            product_data = {
+                "id": product.product_id,
+                "name": product.name,
+                "price": product.price,
+                "stock": product.stock,
+                "type": "physical",
+                "weight": product.weight
+            }
+
+        elif isinstance(product, DigitalProduct):
+            product_data = {
+                "id": product.product_id,
+                "name": product.name,
+                "price": product.price,
+                "stock": product.stock,
+                "type": "digital",
+                "download_size": product.download_size
+            }
+
+        else:
+            raise TypeError("Unsupported product type.")
 
         data.append(product_data)
 
@@ -53,6 +91,14 @@ def save_inventory(inventory):
 # Add a new product
 def add_product_menu(inventory):
     print("\nAdd New Product")
+    print("1. Physical Product")
+    print("2. Digital Product")
+
+    product_type = input("Select product type: ").strip()
+
+    if product_type not in ["1", "2"]:
+        print("Invalid product type.")
+        return
 
     product_id = input("Product ID: ").strip()
 
@@ -66,11 +112,28 @@ def add_product_menu(inventory):
         price = float(input("Price: "))
         stock = int(input("Stock Quantity: "))
 
-        if price < 0 or stock < 0:
-            print("Price and stock cannot be negative.")
-            return
+        if product_type == "1":
+            weight = float(input("Weight (kg): "))
 
-        product = Product(product_id, name, price, stock)
+            product = PhysicalProduct(
+                product_id,
+                name,
+                price,
+                stock,
+                weight
+            )
+
+        else:
+            download_size = float(input("Download Size (MB): "))
+
+            product = DigitalProduct(
+                product_id,
+                name,
+                price,
+                stock,
+                download_size
+            )
+
         inventory.add_product(product)
 
         print("Product added successfully!")
@@ -123,7 +186,15 @@ def search_product_menu(inventory):
 
     print("\nProduct Found")
     print("------------------------------------------------")
+
     product.display_information()
+
+    print("Fulfilment:", product.get_fulfilment_info())
+
+    if isinstance(product, CanBeShipped):
+        shipping_cost = product.calculate_shipping_cost()
+        print(f"Shipping Cost: ${shipping_cost:.2f}")
+
     print("------------------------------------------------")
 
 

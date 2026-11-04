@@ -29,6 +29,7 @@ class Inventory:
         else:
             for product in self.__products:
                 product.display_information()
+                print()
 
         print("------------------------------------------------")
 
