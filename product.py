@@ -1,50 +1,53 @@
 from abc import ABC, abstractmethod
+from supplier import Supplier
+
 
 class Product(ABC):
-    def __init__(self, product_id: str, name: str, price: float, stock: int):
-        if not product_id.strip():
-            raise ValueError("Product ID cannot be empty.")
-
-        if not name.strip():
-            raise ValueError("Product name cannot be empty.")
-
-        if price < 0 or stock < 0:
-            raise ValueError("Price and stock cannot be negative.")
-
-        self.__product_id = product_id.strip()
-        self.__name = name.strip()
-        self.__price = float(price)
-        self.__stock = int(stock)
+    def __init__(
+        self,
+        product_id: str,
+        name: str,
+        price: float,
+        stock: int,
+        supplier: Supplier
+    ) -> None:
+        self.__product_id: str = product_id
+        self.__name: str = name
+        self.__price: float = price
+        self.__stock: int = stock
+        self.supplier: Supplier = supplier
 
     @property
-    def product_id(self):
+    def product_id(self) -> str:
         return self.__product_id
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @property
-    def price(self):
+    def price(self) -> float:
         return self.__price
 
     @property
-    def stock(self):
+    def stock(self) -> int:
         return self.__stock
 
-    def update_stock(self, quantity: int):
+    def update_stock(self, quantity: int) -> None:
         if quantity < 0:
-            raise ValueError("Stock cannot be negative.")
+            raise ValueError("Stock quantity cannot be negative.")
 
-        self.__stock = int(quantity)
+        self.__stock = quantity
 
-    def display_information(self):
+    def display_information(self) -> None:
         print(
             f"ID: {self.__product_id} | "
             f"Name: {self.__name} | "
             f"Price: ${self.__price:.2f} | "
             f"Stock: {self.__stock}"
         )
+
+        self.supplier.display_information()
 
     @abstractmethod
     def get_fulfilment_info(self) -> str:

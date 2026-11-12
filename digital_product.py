@@ -1,4 +1,6 @@
 from product import Product
+from supplier import Supplier
+
 
 class DigitalProduct(Product):
     def __init__(
@@ -7,20 +9,21 @@ class DigitalProduct(Product):
         name: str,
         price: float,
         stock: int,
-        download_size: float
-    ):
-        super().__init__(product_id, name, price, stock)
+        download_size: float,
+        supplier: Supplier
+    ) -> None:
+        super().__init__(product_id, name, price, stock, supplier)
 
-        if download_size < 0:
-            raise ValueError("Download size cannot be negative.")
+        if download_size <= 0:
+            raise ValueError("Download size must be greater than zero.")
 
-        self.__download_size = float(download_size)
+        self.__download_size: float = download_size
 
     @property
-    def download_size(self):
+    def download_size(self) -> float:
         return self.__download_size
 
-    def display_information(self):
+    def display_information(self) -> None:
         super().display_information()
         print(f"Download Size: {self.__download_size:.2f} MB")
 

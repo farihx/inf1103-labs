@@ -1,5 +1,7 @@
 from product import Product
 from can_be_shipped import CanBeShipped
+from supplier import Supplier
+
 
 class PhysicalProduct(Product, CanBeShipped):
     def __init__(
@@ -8,20 +10,21 @@ class PhysicalProduct(Product, CanBeShipped):
         name: str,
         price: float,
         stock: int,
-        weight: float
-    ):
-        super().__init__(product_id, name, price, stock)
+        weight: float,
+        supplier: Supplier
+    ) -> None:
+        super().__init__(product_id, name, price, stock, supplier)
 
-        if weight < 0:
-            raise ValueError("Weight cannot be negative.")
+        if weight <= 0:
+            raise ValueError("Weight must be greater than zero.")
 
-        self.__weight = float(weight)
+        self.__weight: float = weight
 
     @property
-    def weight(self):
+    def weight(self) -> float:
         return self.__weight
 
-    def display_information(self):
+    def display_information(self) -> None:
         super().display_information()
         print(f"Weight: {self.__weight:.2f} kg")
 
@@ -29,4 +32,4 @@ class PhysicalProduct(Product, CanBeShipped):
         return "This product requires physical shipping."
 
     def calculate_shipping_cost(self) -> float:
-        return round(5.00 + (self.__weight * 2.00), 2)
+        return round(5.00 + self.__weight * 2.00, 2)
